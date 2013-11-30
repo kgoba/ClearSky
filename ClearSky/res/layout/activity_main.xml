@@ -22,14 +22,6 @@
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                android:id="@+id/textViewAccelZ"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingRight="5dp"
-                android:text="1.0 g"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <TextView
                 android:id="@+id/textViewAccelX"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -41,7 +33,16 @@
                 android:id="@+id/textViewAccelY"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingRight="5dp"
                 android:text="0.0 g"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/textViewAccelZ"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingRight="5dp"
+                android:text="1.0 g"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
         </TableRow>
@@ -57,14 +58,6 @@
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                android:id="@+id/textViewMagZ"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingRight="5dp"
-                android:text="0 G"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <TextView
                 android:id="@+id/textViewMagX"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,6 +69,15 @@
                 android:id="@+id/textViewMagY"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingRight="5dp"
+                android:text="0 G"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/textViewMagZ"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingRight="5dp"
                 android:text="0 G"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 

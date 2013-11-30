@@ -18,7 +18,7 @@ public class BootReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 	    AlarmManager service = (AlarmManager) context
 	            .getSystemService(Context.ALARM_SERVICE);
-	        Intent i = new Intent(context, StartServiceReceiver.class);
+	        Intent i = new Intent(context, AlarmReceiver.class);
 	        PendingIntent pending = PendingIntent.getBroadcast(context, 0, i,
 	            PendingIntent.FLAG_CANCEL_CURRENT);
 	        Calendar cal = Calendar.getInstance();
