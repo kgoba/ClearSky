@@ -1,4 +1,4 @@
-package com.kosmoss.clearsky.core;
+package lv.kosmoss.clearsky.core;
 
 import android.app.Service;
 import android.content.Context;

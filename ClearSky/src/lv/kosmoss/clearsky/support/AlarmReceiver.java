@@ -1,6 +1,6 @@
-package com.kosmoss.clearsky.support;
+package lv.kosmoss.clearsky.support;
 
-import com.kosmoss.clearsky.core.LocalService;
+import lv.kosmoss.clearsky.core.LocalService;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
