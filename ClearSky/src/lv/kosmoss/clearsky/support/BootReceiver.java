@@ -1,4 +1,4 @@
-package com.kosmoss.clearsky.support;
+package lv.kosmoss.clearsky.support;
 
 import java.util.Calendar;
 

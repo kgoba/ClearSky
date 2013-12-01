@@ -1,8 +1,10 @@
-package com.kosmoss.clearsky.gui;
+package lv.kosmoss.clearsky.gui;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
+import lv.kosmoss.clearsky.core.LocalService;
+import lv.kosmoss.clearsky.core.SensorConsumer;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -15,18 +17,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kosmoss.clearsky.R;
-import com.kosmoss.clearsky.core.LocalService;
 
 public class MainActivity extends Activity {
 	private Timer autoUpdate;
-	
+
 	/** Called when the activity is first created. */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-	    startService(new Intent(this, LocalService.class));
+		startService(new Intent(this, LocalService.class));
 	}
 
 	@Override
@@ -41,6 +42,7 @@ public class MainActivity extends Activity {
 		super.onResume();
 		bindService(new Intent(this, LocalService.class), mConnection,
 				Context.BIND_AUTO_CREATE);
+
 		autoUpdate = new Timer();
 		autoUpdate.schedule(new TimerTask() {
 			@Override
@@ -51,14 +53,23 @@ public class MainActivity extends Activity {
 					}
 				});
 			}
-		}, 0, 100); // updates each 100 msecs
+		}, 0, 200); // updates UI each 200 msecs
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		autoUpdate.cancel();
+		unbindService(mConnection);
 	}
 
 	private void updateReadings() {
 		String textX, textY, textZ;
-		if (service == null)
+		if (mService == null)
 			return;
-		float[] acc = service.getAcceleration();
+		SensorConsumer consumer = mService.getConsumer();
+
+		float[] acc = consumer.getAcceleration();
 		if (acc != null) {
 			textX = String.format("%+1.2f", acc[0] / 9.81);
 			textY = String.format("%+1.2f", acc[1] / 9.81);
@@ -70,7 +81,7 @@ public class MainActivity extends Activity {
 			textViewY.setText(textY);
 			textViewZ.setText(textZ);
 		}
-		float[] mag = service.getMagfield();
+		float[] mag = consumer.getMagfield();
 		if (mag != null) {
 			textX = String.format("%+1.2f", mag[0] / 50);
 			textY = String.format("%+1.2f", mag[1] / 50);
@@ -84,24 +95,19 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	@Override
-	protected void onPause() {
-		super.onPause();
-		autoUpdate.cancel();
-		unbindService(mConnection);
-	}
+	private LocalService mService = null;
 
-	private LocalService service = null;
-	
 	private ServiceConnection mConnection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder binder) {
-			service = ((LocalService.MyBinder) binder).getService();
-			Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_SHORT)
-					.show();
+			mService = ((LocalService.MyBinder) binder).getService();
+
+			// Toast.makeText(MainActivity.this, "Connected",
+			// Toast.LENGTH_SHORT)
+			// .show();
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
-			service = null;
+			mService = null;
 		}
 	};
 }
