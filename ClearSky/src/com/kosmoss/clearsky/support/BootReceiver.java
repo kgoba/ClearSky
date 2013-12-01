@@ -1,6 +1,7 @@
-package com.kosmoss.clearsky;
+package com.kosmoss.clearsky.support;
 
 import java.util.Calendar;
+
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

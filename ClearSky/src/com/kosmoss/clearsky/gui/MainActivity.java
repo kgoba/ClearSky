@@ -1,4 +1,4 @@
-package com.kosmoss.clearsky;
+package com.kosmoss.clearsky.gui;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -8,12 +8,14 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.hardware.Sensor;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.Menu;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.kosmoss.clearsky.R;
+import com.kosmoss.clearsky.core.LocalService;
 
 public class MainActivity extends Activity {
 	private Timer autoUpdate;

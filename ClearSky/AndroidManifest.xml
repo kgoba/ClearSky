@@ -17,7 +17,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.kosmoss.clearsky.MainActivity"
+            android:name="com.kosmoss.clearsky.gui.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,7 +26,7 @@
         </activity>
 
         <service
-            android:name=".LocalService"
+            android:name="com.kosmoss.clearsky.core.LocalService"
             android:icon="@drawable/ic_launcher"
             android:label="@string/service_name">
         </service>

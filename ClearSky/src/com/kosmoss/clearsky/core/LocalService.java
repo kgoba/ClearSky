@@ -1,4 +1,4 @@
-package com.kosmoss.clearsky;
+package com.kosmoss.clearsky.core;
 
 import android.app.Service;
 import android.content.Context;
@@ -84,7 +84,7 @@ public class LocalService extends Service implements SensorEventListener {
 	}
 	
 	public class MyBinder extends Binder {
-		LocalService getService() {
+		public LocalService getService() {
 			return LocalService.this;
 		}
 	}
