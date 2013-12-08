@@ -3,8 +3,8 @@ package lv.kosmoss.clearsky.gui;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import lv.kosmoss.clearsky.core.LocalService;
 import lv.kosmoss.clearsky.core.SensorConsumer;
+import lv.kosmoss.clearsky.support.LocalService;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -42,7 +42,7 @@ public class MainActivity extends Activity {
 		super.onResume();
 		bindService(new Intent(this, LocalService.class), mConnection,
 				Context.BIND_AUTO_CREATE);
-
+		
 		autoUpdate = new Timer();
 		autoUpdate.schedule(new TimerTask() {
 			@Override
@@ -59,6 +59,7 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
+		
 		autoUpdate.cancel();
 		unbindService(mConnection);
 	}
@@ -100,6 +101,7 @@ public class MainActivity extends Activity {
 	private ServiceConnection mConnection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder binder) {
 			mService = ((LocalService.MyBinder) binder).getService();
+			if (mService != null) mService.Start();
 
 			// Toast.makeText(MainActivity.this, "Connected",
 			// Toast.LENGTH_SHORT)
@@ -107,6 +109,7 @@ public class MainActivity extends Activity {
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
+			if (mService != null) mService.Stop();
 			mService = null;
 		}
 	};

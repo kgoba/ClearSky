@@ -1,5 +1,6 @@
 package lv.kosmoss.clearsky.core;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import android.content.Context;
@@ -12,12 +13,12 @@ public class SensorProducer implements SensorEventListener {
 	SensorManager mSensorManager;
 	Context mContext;
 
-	SensorProducer(Context c, SensorManager m) {
+	public SensorProducer(Context c, SensorManager m) {
 		mSensorManager = m;
 		mContext = c;
 	}
 
-	void Start() {
+	public void Start() {
 		Sensor mMagSensor = mSensorManager
 				.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 		Sensor mAccSensor = mSensorManager
@@ -41,11 +42,11 @@ public class SensorProducer implements SensorEventListener {
 		}
 	}
 
-	void Stop() {
+	public void Stop() {
 		mSensorManager.unregisterListener(this);
 	}
 	
-	private List<SensorConsumer> mConsumers;
+	private List<SensorConsumer> mConsumers = new LinkedList<SensorConsumer>();
 	
 	public void AddConsumer(SensorConsumer consumer)
 	{
