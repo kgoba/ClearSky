@@ -9,7 +9,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-public class SensorProducer implements SensorEventListener {
+public class SensorProducer {
 	SensorManager mSensorManager;
 	Context mContext;
 
@@ -18,6 +18,7 @@ public class SensorProducer implements SensorEventListener {
 		mContext = c;
 	}
 
+	/*
 	public void Start() {
 		Sensor mMagSensor = mSensorManager
 				.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
@@ -46,9 +47,9 @@ public class SensorProducer implements SensorEventListener {
 		mSensorManager.unregisterListener(this);
 	}
 	
-	private List<SensorConsumer> mConsumers = new LinkedList<SensorConsumer>();
+	private List<ISensorConsumer> mConsumers = new LinkedList<ISensorConsumer>();
 	
-	public void AddConsumer(SensorConsumer consumer)
+	public void AddConsumer(ISensorConsumer consumer)
 	{
 		mConsumers.add(consumer);
 	}
@@ -60,11 +61,12 @@ public class SensorProducer implements SensorEventListener {
 
 	@Override
 	public void onSensorChanged(SensorEvent event) {
-		for (SensorConsumer consumer : mConsumers)
+		for (ISensorConsumer consumer : mConsumers)
 		{
 			consumer.Consume(event);
 		}
 	}
+	*/
 
 	// {
 	// LocalBroadcastManager manager = LocalBroadcastManager

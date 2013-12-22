@@ -3,18 +3,18 @@ package lv.kosmoss.clearsky.gui;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import lv.kosmoss.clearsky.core.SensorConsumer;
+import lv.kosmoss.clearsky.core.StateReport;
 import lv.kosmoss.clearsky.support.LocalService;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.Menu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.kosmoss.clearsky.R;
 
@@ -68,13 +68,12 @@ public class MainActivity extends Activity {
 		String textX, textY, textZ;
 		if (mService == null)
 			return;
-		SensorConsumer consumer = mService.getConsumer();
-
-		float[] acc = consumer.getAcceleration();
-		if (acc != null) {
-			textX = String.format("%+1.2f", acc[0] / 9.81);
-			textY = String.format("%+1.2f", acc[1] / 9.81);
-			textZ = String.format("%+1.2f", acc[2] / 9.81);
+		StateReport report = mService.getReport();
+		if (report.acc != null)
+		{
+			textX = String.format("%+1.2f", report.acc.x / SensorManager.STANDARD_GRAVITY);
+			textY = String.format("%+1.2f", report.acc.y / SensorManager.STANDARD_GRAVITY);
+			textZ = String.format("%+1.2f", report.acc.z / SensorManager.STANDARD_GRAVITY);
 			TextView textViewX = (TextView) findViewById(R.id.textViewAccelX);
 			TextView textViewY = (TextView) findViewById(R.id.textViewAccelY);
 			TextView textViewZ = (TextView) findViewById(R.id.textViewAccelZ);
@@ -82,11 +81,10 @@ public class MainActivity extends Activity {
 			textViewY.setText(textY);
 			textViewZ.setText(textZ);
 		}
-		float[] mag = consumer.getMagfield();
-		if (mag != null) {
-			textX = String.format("%+1.2f", mag[0] / 50);
-			textY = String.format("%+1.2f", mag[1] / 50);
-			textZ = String.format("%+1.2f", mag[2] / 50);
+		if (report.mag != null) {
+			textX = String.format("%+1.2f", report.mag.x / SensorManager.MAGNETIC_FIELD_EARTH_MAX);
+			textY = String.format("%+1.2f", report.mag.y / SensorManager.MAGNETIC_FIELD_EARTH_MAX);
+			textZ = String.format("%+1.2f", report.mag.z / SensorManager.MAGNETIC_FIELD_EARTH_MAX);
 			TextView textViewX = (TextView) findViewById(R.id.textViewMagX);
 			TextView textViewY = (TextView) findViewById(R.id.textViewMagY);
 			TextView textViewZ = (TextView) findViewById(R.id.textViewMagZ);
@@ -94,6 +92,11 @@ public class MainActivity extends Activity {
 			textViewY.setText(textY);
 			textViewZ.setText(textZ);
 		}
+		TextView textViewVertical = (TextView) findViewById(R.id.textViewVertical);
+		if (report.isVertical)
+			textViewVertical.setText("vertical");
+		else
+			textViewVertical.setText("");
 	}
 
 	private LocalService mService = null;

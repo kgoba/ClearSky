@@ -1,8 +1,7 @@
 package lv.kosmoss.clearsky.support;
 
-import lv.kosmoss.clearsky.core.SensorConsumer;
-import lv.kosmoss.clearsky.core.SensorProducer;
 import lv.kosmoss.clearsky.core.StateMachine;
+import lv.kosmoss.clearsky.core.StateReport;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -13,18 +12,13 @@ import android.os.IBinder;
 public class LocalService extends Service {
 	private final IBinder mBinder = new MyBinder();
 
-	private SensorProducer mProducer = null;
-	private SensorConsumer mConsumer = null;
-	
 	private StateMachine mStateMachine = null;
 
 	@Override
 	public void onCreate() {
 		// code to execute when the service is first created
 		SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-		mProducer = new SensorProducer(this, sensorManager);
-		mConsumer = new SensorConsumer();
-		mProducer.AddConsumer(mConsumer);
+		mStateMachine = new StateMachine(this, sensorManager);
 	}
 
 	@Override
@@ -43,18 +37,18 @@ public class LocalService extends Service {
 		}
 	}
 	
-	public SensorConsumer getConsumer()
+	public StateReport getReport()
 	{
-		return mConsumer;
+		return mStateMachine.getReport();
 	}
 	
 	public void Start()
 	{
-		mProducer.Start();
+		mStateMachine.Start();
 	}
 	
 	public void Stop()
 	{
-		mProducer.Stop();
+		mStateMachine.Stop();
 	}
 }
