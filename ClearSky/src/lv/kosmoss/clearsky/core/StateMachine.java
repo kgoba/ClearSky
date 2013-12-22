@@ -106,6 +106,14 @@ public class StateMachine implements SensorEventListener {
 	public StateReport getReport()
 	{
 		mReport.state = mState;
+		switch (mState) {
+		case STATE_IDLE:
+			mReport.stateName = "IDLE";
+			break;
+		case STATE_CALIB:
+			mReport.stateName = "CALIB";
+			break;
+		}
 		
 		mReport.acc = lastAcc;
 		mReport.mag = lastMag;

@@ -115,7 +115,7 @@ public class MainActivity extends Activity {
 		textViewMagDown.setText(textDown);
 		
 		TextView textViewState = (TextView) findViewById(R.id.textViewState);
-		textViewState.setText(String.format("%d", report.state));
+		textViewState.setText(String.format("%s [%d]", report.stateName, report.state));
 	}
 	
 	/** Called when the CALIB button is clicked */
