@@ -6,8 +6,8 @@ public class StateReport {
 	public XYZVector acc = null;
 	public XYZVector mag = null;
 
-	public float magUp = Float.NaN;
-	public float magDown = Float.NaN;
+	public float magCalibUp = Float.NaN;
+	public float magCalibDown = Float.NaN;
 
 	public boolean isUp;
 	public boolean isVertical;

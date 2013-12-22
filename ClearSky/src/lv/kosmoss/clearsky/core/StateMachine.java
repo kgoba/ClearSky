@@ -21,7 +21,7 @@ public class StateMachine implements SensorEventListener {
 	public static final int COMMAND_CALIB	= 1;
 	public static final int COMMAND_ARM		= 2;
 	
-	private static final float THRESHOLD_VERTICAL_ALIGN = 0.05f;
+	private static final float THRESHOLD_VERTICAL_ALIGN = 0.05f * SensorManager.STANDARD_GRAVITY;	// ~3 deg
 	private static final int VERTICAL_SUCCESS_COUNT = 10;
 	
 	private SensorManager mSensorManager = null;
@@ -56,7 +56,7 @@ public class StateMachine implements SensorEventListener {
 			public void run() {
 				updateState();
 			}
-		}, 0, 1000);		
+		}, 0, 200);		
 	}
 	
 	public void Stop()
@@ -92,11 +92,11 @@ public class StateMachine implements SensorEventListener {
 	private XYZVector lastMag = new XYZVector();
 	private XYZVector lastAcc = new XYZVector();
 
-	private float magUp = Float.NaN;		// magnetic component along the axis of flight when the vehicle is facing up
-	private float magDown = Float.NaN;		// magnetic component along the axis of flight when the vehicle is facing down
+	private float magCalibUp = Float.NaN;		// magnetic component along the axis of flight when the vehicle is facing up
+	private float magCalibDown = Float.NaN;		// magnetic component along the axis of flight when the vehicle is facing down
 
-	private float magTestAverage = 0;
-	private int testCounter = 0;
+	private float magCalibTotal = 0;
+	private int magCalibCount = 0;
 	
 	private boolean isUp = false;
 	private boolean isVertical = false;
@@ -110,8 +110,8 @@ public class StateMachine implements SensorEventListener {
 		mReport.acc = lastAcc;
 		mReport.mag = lastMag;
 		
-		mReport.magUp = magUp;
-		mReport.magDown = magDown;
+		mReport.magCalibUp = magCalibUp;
+		mReport.magCalibDown = magCalibDown;
 		
 		mReport.isUp = isUp;
 		mReport.isVertical = isVertical;
@@ -146,21 +146,21 @@ public class StateMachine implements SensorEventListener {
 			break;
 		case STATE_CALIB:			
 			if (!isVertical) {
-				testCounter = 0;
-				magTestAverage = 0;
+				magCalibCount = 0;
+				magCalibTotal = 0;
 				break;
 			}
-			testCounter++;
-			magTestAverage += lastMag.y;
-			if (testCounter < VERTICAL_SUCCESS_COUNT) {
+			magCalibCount++;
+			magCalibTotal += lastMag.y;
+			if (magCalibCount < VERTICAL_SUCCESS_COUNT) {
 				break;
 			}
-			if (magUp == Float.NaN && isUp) {
-				magUp = magTestAverage / testCounter;
+			if (magCalibUp == Float.NaN && isUp) {
+				magCalibUp = magCalibTotal / magCalibCount;
 				// TODO produce a sound
 			}
-			else if (magDown == Float.NaN && !isUp) {
-				magDown = magTestAverage / testCounter;
+			else if (magCalibDown == Float.NaN && !isUp) {
+				magCalibDown = magCalibTotal / magCalibCount;
 				// TODO produce a sound
 				mState = STATE_IDLE;
 			}

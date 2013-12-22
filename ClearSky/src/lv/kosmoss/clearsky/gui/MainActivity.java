@@ -69,6 +69,7 @@ public class MainActivity extends Activity {
 		if (mService == null)
 			return;
 		StateReport report = mService.getReport();
+		// report acceleration
 		if (report.acc != null)
 		{
 			textX = String.format("%+1.2f", report.acc.x / SensorManager.STANDARD_GRAVITY);
@@ -81,6 +82,7 @@ public class MainActivity extends Activity {
 			textViewY.setText(textY);
 			textViewZ.setText(textZ);
 		}
+		// report magnetic field
 		if (report.mag != null) {
 			textX = String.format("%+1.2f", report.mag.x / SensorManager.MAGNETIC_FIELD_EARTH_MAX);
 			textY = String.format("%+1.2f", report.mag.y / SensorManager.MAGNETIC_FIELD_EARTH_MAX);
@@ -92,11 +94,16 @@ public class MainActivity extends Activity {
 			textViewY.setText(textY);
 			textViewZ.setText(textZ);
 		}
+		// report orientation
 		TextView textViewVertical = (TextView) findViewById(R.id.textViewVertical);
+		String orientation = new String();
 		if (report.isVertical)
-			textViewVertical.setText("vertical");
+			orientation += "vertical ";
+		if (report.isUp)
+			orientation += "up";
 		else
-			textViewVertical.setText("");
+			orientation += "down";
+		textViewVertical.setText(orientation);
 	}
 
 	private LocalService mService = null;

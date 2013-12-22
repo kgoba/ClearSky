@@ -25,4 +25,11 @@ public class XYZVector {
 		y = data[1];
 		z = data[2];
 	}
+	
+	public void rescale(float scale)
+	{
+		x *= scale;
+		y *= scale;
+		z *= scale;
+	}
 }
