@@ -45,10 +45,16 @@
                 android:text="1.0 g"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        </TableRow>
+            <TextView
+                android:id="@+id/textViewVertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+                        
+       </TableRow>
        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content" >
 
             <TextView
                 android:layout_width="match_parent"
@@ -113,12 +119,41 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="State"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/textViewState"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+            
+        </TableRow>
+
+        <TableRow
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
 
             <TextView
-                android:id="@+id/textViewVertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mag. calib."
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+                        
+            <TextView
+                android:id="@+id/textViewMagUp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/textViewMagDown"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -135,7 +170,8 @@
             android:id="@+id/button1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="CALIB" />
+            android:text="CALIB" 
+            android:onClick="onClickCalib" />
 
         <Button
             android:layout_width="wrap_content"

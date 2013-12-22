@@ -22,7 +22,7 @@ public class StateMachine implements SensorEventListener {
 	public static final int COMMAND_ARM		= 2;
 	
 	private static final float THRESHOLD_VERTICAL_ALIGN = 0.05f * SensorManager.STANDARD_GRAVITY;	// ~3 deg
-	private static final int VERTICAL_SUCCESS_COUNT = 10;
+	private static final int VERTICAL_SUCCESS_COUNT = 20;
 	
 	private SensorManager mSensorManager = null;
 	private Context mContext = null;
@@ -141,9 +141,15 @@ public class StateMachine implements SensorEventListener {
 			// do nothing, wait for GUI to test or arm
 			if (mCommand == COMMAND_CALIB) {
 				mCommand = COMMAND_NONE;
+				// reset calibration data
+				magCalibUp = Float.NaN;
+				magCalibDown = Float.NaN;
+				magCalibCount = 0;
+				magCalibTotal = 0;
 				mState = STATE_CALIB;
 			}
 			break;
+			
 		case STATE_CALIB:			
 			if (!isVertical) {
 				magCalibCount = 0;
@@ -155,15 +161,18 @@ public class StateMachine implements SensorEventListener {
 			if (magCalibCount < VERTICAL_SUCCESS_COUNT) {
 				break;
 			}
-			if (magCalibUp == Float.NaN && isUp) {
+			if (Float.isNaN(magCalibUp) && isUp) {
 				magCalibUp = magCalibTotal / magCalibCount;
 				// TODO produce a sound
 			}
-			else if (magCalibDown == Float.NaN && !isUp) {
+			if (Float.isNaN(magCalibDown) && !isUp) {
 				magCalibDown = magCalibTotal / magCalibCount;
 				// TODO produce a sound
-				mState = STATE_IDLE;
 			}
+			if (!Float.isNaN(magCalibUp) && !Float.isNaN(magCalibDown)) 
+				mState = STATE_IDLE;
+			break;
+			
 		case STATE_ARM: 
 		default:
 		}

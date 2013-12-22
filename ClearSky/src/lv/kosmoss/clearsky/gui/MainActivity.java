@@ -3,6 +3,7 @@ package lv.kosmoss.clearsky.gui;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import lv.kosmoss.clearsky.core.StateMachine;
 import lv.kosmoss.clearsky.core.StateReport;
 import lv.kosmoss.clearsky.support.LocalService;
 import android.app.Activity;
@@ -14,6 +15,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.Menu;
+import android.view.View;
 import android.widget.TextView;
 
 import com.kosmoss.clearsky.R;
@@ -66,9 +68,9 @@ public class MainActivity extends Activity {
 
 	private void updateReadings() {
 		String textX, textY, textZ;
-		if (mService == null)
+		if (mStateMachine == null)
 			return;
-		StateReport report = mService.getReport();
+		StateReport report = mStateMachine.getReport();
 		// report acceleration
 		if (report.acc != null)
 		{
@@ -104,14 +106,35 @@ public class MainActivity extends Activity {
 		else
 			orientation += "down";
 		textViewVertical.setText(orientation);
+		
+		TextView textViewMagUp = (TextView) findViewById(R.id.textViewMagUp);
+		TextView textViewMagDown = (TextView) findViewById(R.id.textViewMagDown);
+		String textUp = String.format("%+1.2f", report.magCalibUp / SensorManager.MAGNETIC_FIELD_EARTH_MAX);
+		String textDown = String.format("%+1.2f", report.magCalibDown / SensorManager.MAGNETIC_FIELD_EARTH_MAX);
+		textViewMagUp.setText(textUp);
+		textViewMagDown.setText(textDown);
+		
+		TextView textViewState = (TextView) findViewById(R.id.textViewState);
+		textViewState.setText(String.format("%d", report.state));
+	}
+	
+	/** Called when the CALIB button is clicked */
+	public void onClickCalib(View view) {
+		if (mStateMachine == null)
+			return;
+		mStateMachine.setCommand(StateMachine.COMMAND_CALIB);
 	}
 
 	private LocalService mService = null;
+	private StateMachine mStateMachine = null;
 
 	private ServiceConnection mConnection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder binder) {
 			mService = ((LocalService.MyBinder) binder).getService();
-			if (mService != null) mService.Start();
+			if (mService != null) {
+				mService.Start();
+				mStateMachine = mService.getStateMachine();
+			}
 
 			// Toast.makeText(MainActivity.this, "Connected",
 			// Toast.LENGTH_SHORT)
@@ -121,6 +144,7 @@ public class MainActivity extends Activity {
 		public void onServiceDisconnected(ComponentName className) {
 			if (mService != null) mService.Stop();
 			mService = null;
+			mStateMachine = null;
 		}
 	};
 }

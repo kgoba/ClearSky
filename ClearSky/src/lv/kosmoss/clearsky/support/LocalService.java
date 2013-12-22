@@ -37,9 +37,9 @@ public class LocalService extends Service {
 		}
 	}
 	
-	public StateReport getReport()
+	public StateMachine getStateMachine()
 	{
-		return mStateMachine.getReport();
+		return mStateMachine;
 	}
 	
 	public void Start()
