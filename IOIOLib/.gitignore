@@ -1,2 +1,2 @@
-/bin
-/gen
+/target/android/bin
+/target/android/gen
